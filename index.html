@@ -3,108 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Revergy | DataCore Cyber_Terminal</title>
-    <!-- Librería SheetJS añadida para darte la funcionalidad de leer el Excel sin romper nada -->
-    <script src="https://cdn.sheetjs.com"></script>
+    <script src="https://cdn.jsdelivr.net"></script>
     <style>
         @import url('https://fonts.googleapis.com');
-
-        :root {
-            --rv-blue: #004a99;
-            --rv-cyan: #00f2ff;
-            --rv-dark: #010816;
-            --rv-panel: rgba(2, 12, 34, 0.9);
-            --border: rgba(0, 242, 255, 0.2);
-            --text-main: #e2e8f0;
-            --neon-glow: 0 0 15px rgba(0, 242, 255, 0.3);
-        }
-
+        :root { --rv-blue: #004a99; --rv-cyan: #00f2ff; --rv-dark: #010816; --rv-panel: rgba(2, 12, 34, 0.9); --border: rgba(0, 242, 255, 0.2); --text-main: #e2e8f0; --neon-glow: 0 0 15px rgba(0, 242, 255, 0.3); }
         * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        body {
-            margin: 0; height: 100vh; background: var(--rv-dark);
-            font-family: 'JetBrains Mono', monospace; color: var(--text-main);
-            display: flex; justify-content: center; align-items: center; overflow: hidden;
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(0, 74, 153, 0.15) 0%, transparent 40%),
-                linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px;
-        }
-
-        #app {
-            width: 96%; max-width: 1500px; height: 92vh; background: var(--rv-panel);
-            backdrop-filter: blur(25px); border-radius: 30px; display: flex;
-            border: 1px solid var(--border); box-shadow: 0 0 80px rgba(0,0,0,0.8);
-            overflow: hidden; position: relative;
-        }
-
-        /* Línea de escaneo láser */
-        #app::after {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--rv-cyan), transparent);
-            opacity: 0.2; animation: scan 10s linear infinite; z-index: 10;
-        }
+        body { margin: 0; height: 100vh; background: var(--rv-dark); font-family: 'JetBrains Mono', monospace; color: var(--text-main); display: flex; justify-content: center; align-items: center; overflow: hidden; background-image: radial-gradient(circle at 20% 20%, rgba(0, 74, 153, 0.15) 0%, transparent 40%), linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px); background-size: 100% 100%, 40px 40px, 40px 40px; }
+        #app { width: 96%; max-width: 1500px; height: 92vh; background: var(--rv-panel); backdrop-filter: blur(25px); border-radius: 30px; display: flex; border: 1px solid var(--border); box-shadow: 0 0 80px rgba(0,0,0,0.8); overflow: hidden; position: relative; }
+        #app::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--rv-cyan), transparent); opacity: 0.2; animation: scan 10s linear infinite; z-index: 10; }
         @keyframes scan { 0% { top: 0% } 100% { top: 100% } }
-
-        #sidebar { 
-            width: 320px; background: rgba(0, 0, 0, 0.5); padding: 40px 25px; 
-            border-right: 1px solid var(--border); overflow-y: auto; 
-        }
-
-        #logo-container {
-            width: 100%; height: 120px; margin-bottom: 35px;
-            background: url("13-revergy_reducida.png") no-repeat center;
-            background-size: contain; filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.2));
-        }
-
-        .cat-title { 
-            font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; 
-            color: var(--rv-cyan); letter-spacing: 3px; margin: 35px 0 15px; 
-            text-transform: uppercase; opacity: 0.8;
-        }
-
-        .nav-item { 
-            font-size: 13px; color: #94a3b8; padding: 12px 15px; 
-            cursor: pointer; border-radius: 10px; display: block; text-decoration: none;
-        }
-        .nav-item:hover { 
-            color: var(--rv-cyan); background: rgba(0, 242, 255, 0.08); 
-            transform: translateX(10px); text-shadow: var(--neon-glow);
-        }
-
+        #sidebar { width: 320px; background: rgba(0, 0, 0, 0.5); padding: 40px 25px; border-right: 1px solid var(--border); overflow-y: auto; }
+        #logo-container { width: 100%; height: 120px; margin-bottom: 35px; background: url("13-revergy_reducida.png") no-repeat center; background-size: contain; filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.2)); }
+        .cat-title { font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; color: var(--rv-cyan); letter-spacing: 3px; margin: 35px 0 15px; text-transform: uppercase; opacity: 0.8; }
+        .nav-item { font-size: 13px; color: #94a3b8; padding: 12px 15px; cursor: pointer; border-radius: 10px; display: block; text-decoration: none; }
+        .nav-item:hover { color: var(--rv-cyan); background: rgba(0, 242, 255, 0.08); transform: translateX(10px); text-shadow: var(--neon-glow); }
         #chat-area { flex: 1; display: flex; flex-direction: column; position: relative; }
         #display { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 25px; }
-
-        .msg { 
-            max-width: 80%; padding: 22px; border-radius: 20px; font-size: 14.5px; 
-            line-height: 1.6; animation: fadeInUp 0.4s ease forwards; 
-        }
+        .msg { max-width: 80%; padding: 22px; border-radius: 20px; font-size: 14.5px; line-height: 1.6; animation: fadeInUp 0.4s ease forwards; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
         .bot { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 2px; }
         .user { background: linear-gradient(135deg, var(--rv-blue), #002550); color: white; align-self: flex-end; border-bottom-right-radius: 2px; box-shadow: 0 10px 25px rgba(0, 74, 153, 0.2); }
-
         .loader-container { font-family: 'Orbitron'; font-size: 11px; color: var(--rv-cyan); margin-bottom: 10px; }
         .loader { width: 150px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 10px; overflow: hidden; }
         .loader-bar { height: 100%; background: var(--rv-cyan); box-shadow: var(--neon-glow); animation: load 1.5s ease-in-out forwards; }
         @keyframes load { from { width: 0%; } to { width: 100%; } }
-
         .report-box { background: white; border-radius: 25px; margin-top: 15px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
-        .btn-dl { 
-            background: #0f172a; color: var(--rv-cyan); border: none; padding: 18px; 
-            width: 100%; cursor: pointer; font-weight: bold; font-family: 'Orbitron'; font-size: 10px; 
-        }
+        .report-box img { width: 100%; display: block; height: auto; }
+        .btn-dl { background: #0f172a; color: var(--rv-cyan); border: none; padding: 18px; width: 100%; cursor: pointer; font-weight: bold; font-family: 'Orbitron'; font-size: 10px; border-top: 1px solid #eee; }
         .btn-dl:hover { background: var(--rv-cyan); color: #000; }
-
         #input-zone { padding: 35px 50px; background: rgba(0, 0, 0, 0.4); display: flex; gap: 20px; border-top: 1px solid var(--border); }
-        input[type="text"] { 
-            flex: 1; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); 
-            border-radius: 15px; padding: 20px 25px; color: white; outline: none; font-size: 16px;
-        }
-        input[type="text"]:focus { border-color: var(--rv-cyan); box-shadow: 0 0 15px rgba(0, 242, 255, 0.1); }
-        
+        input { flex: 1; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); border-radius: 15px; padding: 20px 25px; color: white; outline: none; font-size: 16px; }
+        input:focus { border-color: var(--rv-cyan); box-shadow: 0 0 15px rgba(0, 242, 255, 0.1); }
         #send { background: var(--rv-cyan); border: none; width: 80px; border-radius: 15px; cursor: pointer; font-size: 26px; box-shadow: var(--neon-glow); }
-        
         #excelInput { position: absolute; right: 50px; top: 25px; z-index: 20; color: var(--rv-cyan); font-size: 11px; font-family: 'Orbitron'; cursor: pointer; }
     </style>
 </head>
@@ -115,144 +45,141 @@
         <div id="logo-container"></div>
         <div class="cat-title">Gestión Proyecto</div>
         <a class="nav-item" onclick="ask('avance general')">Avance General (%)</a>
-        <a class="nav-item" onclick="ask('hincas instaladas')">Hincas y Módulos</a>
-        <a class="nav-item" onclick="ask('facturacion')">Facturación Actual</a>
-        <a class="nav-item" onclick="ask('mano de obra')">Mano de Obra</a>
-        <div class="cat-title">Ingeniería & Energía</div>
-        <a class="nav-item" onclick="ask('avance ingenieria')">Avance Ingeniería</a>
-        <a class="nav-item" onclick="ask('energizacion')">Energización MW</a>
+        <a class="nav-item" onclick="ask('hincas y modulos')">Hincas y Módulos</a>
+        <a class="nav-item" onclick="ask('facturacion')">Facturación (Costo)</a>
+        <a class="nav-item" onclick="ask('eventos contractuales')">Eventos Contractuales</a>
     </aside>
 
     <main id="chat-area">
         <input type="file" id="excelInput" accept=".xlsx,.xls" />
         <div id="display"></div>
         <div id="input-zone">
-            <input type="text" id="user-in" placeholder="Pregunta por el avance, hincas, SPI o facturación...">
+            <input type="text" id="user-in" placeholder="Consulta métricas de Puerta de Oro...">
             <button id="send">⚡</button>
         </div>
     </main>
 </div>
 
 <script>
-    let DATASET_REAL = [];
+    const PROYECTO_DATA = {
+        hincas: { totales: 101970, revergy: 101015, avance: "99,06%" },
+        modulos: { planeado: "74,19%", ejecutado: "88,35%", diferencia: "+14,15%" },
+        avance: { previsto: "51,00%", peso: "96,90%", contractual: "50,05%" },
+        costos: { total: "385.633.885.899,00", eventos: "2.272.365.581,00" }
+    };
+
     const display = document.getElementById('display');
     const input = document.getElementById('user-in');
     const btn = document.getElementById('send');
 
-    const REAL_DATA = {
-        avance: { real: 85.4, plan: 82.1, desv: "+3.3", spi: "1.08" },
-        hincas: { instaladas: 14200, total: 16500, pct: 86.06 },
-        modulos: { instalados: 9200, total: 12000, trackers: 512 },
-        facturacion: { actual: "1,425,800", pct: 72, plan: 69, diff: 3 },
-        personal: { total: 268, directa: 194, indirecta: 74, planeado: 250 },
-        ingenieria: { real: 99.2, plan: 100 },
-        energizacion: { mw: 52.8, pct: 18 }
-    };
-
-    const MESSAGES_MODULE = {
-        greetings: ["hola", "buenos dias", "buenas tardes", "que tal", "epale", "que onda", "saludos"],
-        farewells: ["gracias", "adios", "hasta luego", "chao", "bye", "fin de reporte", "listo"]
-    };
-
     function addMsg(html, type) {
-        const d = document.createElement('div');
-        d.className = `msg ${type}`;
-        d.innerHTML = html;
-        display.appendChild(d);
-        display.scrollTop = display.scrollHeight;
+        const d = document.createElement('div'); d.className = `msg ${type}`; d.innerHTML = html;
+        display.appendChild(d); display.scrollTop = display.scrollHeight;
     }
 
     function showLoader(callback) {
-        const loaderHtml = `<div class="loader-container">Escaneando base de datos Power BI...<div class="loader"><div class="loader-bar"></div></div></div>`;
+        const loaderHtml = `<div class="loader-container">Escaneando métricas Puerta de Oro...<div class="loader"><div class="loader-bar"></div></div></div>`;
         addMsg(loaderHtml, "bot");
         setTimeout(() => {
-            const loaders = document.querySelectorAll('.loader-container');
-            if(loaders.length > 0) loaders[loaders.length - 1].remove();
+            document.querySelectorAll('.loader-container').forEach(l => l.remove());
             callback();
-        }, 1500);
+        }, 1000);
     }
 
     function analyze(val) {
-        const q = val.toLowerCase();
-        if (MESSAGES_MODULE.greetings.some(g => q.includes(g))) {
-            return addMsg("¡Hola! Soy el núcleo de inteligencia de Revergy. Todos los sistemas del Power BI están operativos. ¿Qué métrica o KPI deseas consultar hoy?", "bot");
+        const q = val.toLowerCase().trim();
+
+        // RAZONAMIENTO HUMANO
+        if (q.match(/(hola|buenos dias|buenas tardes|saludos|hey)/)) {
+            setTimeout(() => addMsg("<b>Terminal Revergy:</b> Conexión establecida. Saludos, operador. Los sistemas están listos.", "bot"), 300);
+            return;
         }
-        if (MESSAGES_MODULE.farewells.some(f => q.includes(f))) {
-            return addMsg("Perfecto. Fin de sesión de consulta. Si necesitas algo más, ya sabes dónde encontrarme. ¡Hasta luego!", "bot");
+        if (q.match(/(como estas|quien eres|que haces|ayuda)/)) {
+            setTimeout(() => addMsg("Estado: <b>ÓPTIMO</b>. Soy el núcleo de datos Revergy. Analizo Avance, Montaje y Costos.", "bot"), 300);
+            return;
         }
-        
+        if (q.match(/(gracias|adios|chao|perfecto|terminar)/)) {
+            setTimeout(() => addMsg("<b>DataCore:</b> Operación finalizada. ¡Tenga una excelente jornada de gestión!", "bot"), 300);
+            return;
+        }
+
+        // ANÁLISIS DE MÉTRICAS
         showLoader(() => {
-            if (q.includes("avance general") || q.includes("proyecto") || q.includes("curva s")) {
-                const total = DATASET_REAL.length || REAL_DATA.hincas.total;
-                const ejecutado = DATASET_REAL.length ? Math.round(total * 0.85) : REAL_DATA.hincas.instaladas;
-                const pct = ((ejecutado/total)*100).toFixed(1);
-                addMsg(`Según datos reales del cronograma, el avance ejecutado es <b>${pct}%</b>.`, "bot");
-                drawReport("Avance General", `Real: ${REAL_DATA.avance.real}%`, `Plan: ${REAL_DATA.avance.plan}%`, `SPI: ${REAL_DATA.avance.spi}`);
+            if (q.includes("avance general")) {
+                addMsg(`El <b>Avance Previsto</b> es del <b>${PROYECTO_DATA.avance.previsto}</b>.`, "bot");
+                drawReport("Avance de Obra", `Previsto: ${PROYECTO_DATA.avance.previsto}`, `Peso: ${PROYECTO_DATA.avance.peso}`, `Contractual: ${PROYECTO_DATA.avance.contractual}`);
             }
-            else if (q.includes("hincas") || q.includes("modulos")) {
-                addMsg(`Se han instalado <b>${REAL_DATA.hincas.instaladas}</b> hincas.`, "bot");
-                drawReport("Montaje", `${REAL_DATA.hincas.instaladas} Hincas`, `${REAL_DATA.modulos.instalados} Módulos`, `${REAL_DATA.modulos.trackers} Trackers`);
+            else if (q.includes("hincas") || q.includes("modulos") || q.includes("montaje")) {
+                addMsg(`<b>Estado Montaje:</b> Módulos al <b>${PROYECTO_DATA.modulos.ejecutado}</b>.`, "bot");
+                drawReport("Montaje Real", `Módulos: ${PROYECTO_DATA.modulos.ejecutado}`, `Hincas: ${PROYECTO_DATA.hincas.revergy.toLocaleString()}`, `Diferencia: ${PROYECTO_DATA.modulos.diferencia}`);
             }
             else if (q.includes("facturacion") || q.includes("costo")) {
-                addMsg(`Facturación actual: <b>${REAL_DATA.facturacion.actual} $</b>.`, "bot");
-                drawReport("Finanzas", "$"+REAL_DATA.facturacion.actual, "Plan: "+REAL_DATA.facturacion.plan+"%", "Diff: +"+REAL_DATA.facturacion.diff+"%");
+                addMsg(`Valor total contrato: <b>R$ ${PROYECTO_DATA.costos.total}</b>.`, "bot");
+                drawReport("Análisis de Costo", `Total: R$ ${PROYECTO_DATA.costos.total}`, "Status: Sincronizado", "Moneda: BRL (R$)");
+            }
+            else if (q.includes("eventos")) {
+                addMsg(`Impacto financiero eventos: <b>R$ ${PROYECTO_DATA.costos.eventos}</b>.`, "bot");
+                drawReport("Eventos Contrato", `Suma: R$ ${PROYECTO_DATA.costos.eventos}`, "Causa: Delay Vegetación", "Origen: Master Data");
             }
             else {
-                addMsg("No detecto el campo. Prueba con: <b>Avance general, Facturación o Hincas.</b>", "bot");
+                addMsg("Métrica no detectada. Use el panel lateral para datos auditados.", "bot");
             }
         });
     }
 
     function drawReport(title, v1, v2, v3) {
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement('canvas'); 
         canvas.width = 600; canvas.height = 350;
         const ctx = canvas.getContext('2d');
+        
         ctx.fillStyle = "#ffffff"; ctx.fillRect(0,0,600,350);
         ctx.fillStyle = "#004a99"; ctx.fillRect(0,0,600,70);
         ctx.fillStyle = "#ffffff"; ctx.font = "bold 22px Arial"; ctx.fillText("REVERGY DATACORE REPORT", 30, 45);
         ctx.fillStyle = "#1e293b"; ctx.font = "bold 26px Arial"; ctx.fillText(title, 30, 120);
         ctx.font = "20px Arial"; ctx.fillStyle = "#475569";
         ctx.fillText(">> " + v1, 50, 180); ctx.fillText(">> " + v2, 50, 230); ctx.fillText(">> " + v3, 50, 280);
+        
+        const imageData = canvas.toDataURL("image/png");
+        const boxId = 'report-' + Date.now();
+        
+        // El contenido HTML con la imagen visible y el botón
+        const reportHTML = `
+            <div class="report-box" id="${boxId}">
+                <img src="${imageData}" alt="Reporte">
+                <button class="btn-dl">📥 DESCARGAR REPORTE (.PNG)</button>
+            </div>
+        `;
+        
+        addMsg(reportHTML, "bot");
 
-        const box = document.createElement('div');
-        box.className = "report-box";
-        box.appendChild(canvas);
-        const btnDl = document.createElement('button');
-        btnDl.className = "btn-dl"; btnDl.innerText = "📥 DESCARGAR CAPTURA DEL DATO (.PNG)";
-        btnDl.onclick = () => {
-            const link = document.createElement('a');
-            link.download = `Revergy_Report_${title}.png`;
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-        };
-        box.appendChild(btnDl);
-        addMsg(box.outerHTML, "bot");
+        // Lógica de descarga robusta
         setTimeout(() => {
-            const btns = document.querySelectorAll('.btn-dl');
-            if(btns.length > 0) btns[btns.length - 1].onclick = btnDl.onclick;
+            const reportElement = document.getElementById(boxId);
+            const downloadBtn = reportElement.querySelector('.btn-dl');
+            downloadBtn.onclick = () => {
+                const link = document.createElement('a');
+                link.download = `Reporte_${title.replace(/\s+/g, '_')}.png`;
+                link.href = imageData;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
         }, 100);
     }
 
-    // --- INTERACCIONES ---
     window.ask = (t) => { input.value = t; btn.onclick(); };
-    btn.onclick = () => { if(input.value) { const v = input.value; addMsg(v, 'user'); input.value=''; analyze(v); } };
+    btn.onclick = () => { 
+        if(input.value) { 
+            const v = input.value; 
+            addMsg(v, 'user'); 
+            input.value=''; 
+            analyze(v); 
+        } 
+    };
     input.onkeypress = (e) => { if(e.key === 'Enter') btn.onclick(); };
-
-    // Lógica para leer Excel (SheetJS) integrada a tu DATASET_REAL
-    document.getElementById('excelInput').addEventListener('change', function(e) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, {type: 'array'});
-            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-            DATASET_REAL = XLSX.utils.sheet_to_json(worksheet);
-            addMsg(`📂 <b>DASHBOARD ACTUALIZADO:</b> Se han cargado ${DATASET_REAL.length} registros del Power BI.`, "bot");
-        };
-        reader.readAsArrayBuffer(e.target.files);
-    });
-
-    window.onload = () => addMsg("<b>NÚCLEO REVERGY CONECTADO.</b><br>Sistemas operativos al 100%. ¿Qué dato del dashboard analizamos hoy?", "bot");
+    window.onload = () => addMsg("<b>NÚCLEO REVERGY ONLINE.</b><br>Datos listos. ¿Qué KPI analizamos?", "bot");
 </script>
 </body>
 </html>
+
 
