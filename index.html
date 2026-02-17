@@ -2,214 +2,245 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistente Inteligente - Guía de Usuario</title>
-    <link href="https://cdnjs.cloudflare.com" rel="stylesheet">
+    <title>Revergy | DataCore Cyber_Terminal</title>
     <style>
-        :root {
-            --primary-color: #4a90e2;
-            --bg-color: #f4f7f6;
-            --chat-bg: #ffffff;
-            --user-msg: #e1f5fe;
-            --ai-msg: #f1f1f1;
+        @import url('https://fonts.googleapis.com');
+
+        :root { 
+            --rv-blue: #004a99; 
+            --rv-cyan: #00f2ff; 
+            --rv-dark: #010816; 
+            --rv-panel: rgba(2, 12, 34, 0.9); 
+            --border: rgba(0, 242, 255, 0.2); 
+            --text-main: #e2e8f0; 
+            --neon-glow: 0 0 20px rgba(0, 242, 255, 0.4); 
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            display: flex;
-            height: 100vh;
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        body { 
+            margin: 0; height: 100vh; background: var(--rv-dark); 
+            font-family: 'JetBrains Mono', monospace; color: var(--text-main); 
+            display: flex; justify-content: center; align-items: center; overflow: hidden; 
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 74, 153, 0.1) 0%, transparent 80%),
+                linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px); 
+            background-size: 100% 100%, 40px 40px, 40px 40px;
         }
 
-        /* Menú Lateral Izquierdo */
-        #sidebar {
-            width: 260px;
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        #app { 
+            width: 96%; max-width: 1500px; height: 92vh; background: var(--rv-panel); 
+            backdrop-filter: blur(30px); border-radius: 30px; display: flex; 
+            border: 1px solid var(--border); box-shadow: 0 0 100px rgba(0,0,0,0.9); 
+            overflow: hidden; position: relative;
         }
 
-        .faq-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 0.9em;
+        #sidebar { 
+            width: 320px; background: rgba(0, 0, 0, 0.6); padding: 40px 25px; 
+            border-right: 1px solid var(--border); overflow-y: auto; z-index: 2; 
         }
 
-        .faq-item:hover {
-            background: rgba(255, 255, 255, 0.2);
+        #logo-container { 
+            width: 100%; height: 120px; margin-bottom: 35px; 
+            background: url("13-revergy_reducida.png") no-repeat center; 
+            background-size: contain; filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.3));
         }
 
-        /* Contenedor del Chat */
-        #chat-container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            max-width: 900px;
-            margin: 20px auto;
-            background: var(--chat-bg);
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            overflow: hidden;
+        .cat-title { 
+            font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900; 
+            color: var(--rv-cyan); letter-spacing: 4px; margin: 40px 0 15px; 
+            text-transform: uppercase; text-shadow: var(--neon-glow);
         }
 
-        #chat-window {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .nav-item { 
+            font-size: 13px; color: #94a3b8; padding: 14px 15px; cursor: pointer; 
+            border-radius: 12px; display: block; text-decoration: none;
+        }
+        .nav-item:hover { color: white; background: rgba(0, 242, 255, 0.1); transform: translateX(8px); }
+
+        #chat-area { flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+
+        /* NUEVO EFECTO: RESPLANDOR DE DATOS ESTÁTICO (Reemplaza al láser) */
+        #chat-area::before {
+            content: ""; position: absolute; inset: 0;
+            background: radial-gradient(circle at center, transparent 40%, rgba(0, 242, 255, 0.05) 100%);
+            pointer-events: none; z-index: 1;
         }
 
-        .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 15px;
-            line-height: 1.5;
-            position: relative;
-        }
+        #display { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 30px; scroll-behavior: smooth; z-index: 2; }
 
-        .user-message {
-            align-self: flex-end;
-            background-color: var(--user-msg);
-            color: #0d47a1;
-            border-bottom-right-radius: 2px;
-        }
+        .msg { max-width: 85%; padding: 25px; border-radius: 22px; font-size: 15px; line-height: 1.7; animation: fadeInUp 0.5s ease-out forwards; overflow: visible; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .ai-message {
-            align-self: flex-start;
-            background-color: var(--ai-msg);
-            color: #333;
-            border-bottom-left-radius: 2px;
-        }
+        .bot { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); align-self: flex-start; border-left: 5px solid var(--rv-cyan); }
+        .user { background: linear-gradient(135deg, var(--rv-blue), #001a3d); color: white; align-self: flex-end; }
 
-        #input-area {
-            padding: 20px;
-            border-top: 1px solid #eee;
-            display: flex;
-            gap: 10px;
-        }
+        .report-box { border-radius: 24px; margin-top: 20px; overflow: hidden; width: 100%; max-width: 600px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); border: 1px solid var(--border); background: #010816; }
+        .report-box img { width: 100%; height: auto; display: block; }
 
-        input {
-            flex-grow: 1;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            outline: none;
-        }
+        .btn-group { display: flex; background: #0a0f1d; }
+        .btn-act { background: transparent; color: var(--rv-cyan); border: none; padding: 18px; flex: 1; cursor: pointer; font-size: 10px; font-weight: 900; font-family: 'Orbitron'; border-right: 1px solid var(--border); text-transform: uppercase; }
+        .btn-act:hover { background: var(--rv-cyan); color: #000; }
 
-        button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+        #input-zone { padding: 40px 60px; background: rgba(0, 0, 0, 0.5); display: flex; gap: 25px; border-top: 1px solid var(--border); z-index: 5; }
+        input { flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 18px; padding: 22px 30px; color: white; outline: none; }
+        input:focus { border-color: var(--rv-cyan); box-shadow: 0 0 15px rgba(0, 242, 255, 0.1); }
+        
+        #send { background: var(--rv-cyan); border: none; width: 85px; border-radius: 18px; cursor: pointer; font-size: 28px; box-shadow: var(--neon-glow); }
 
-        button:hover {
-            background-color: #357abd;
+        @media print {
+            body { background: white !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            #sidebar, #input-zone, .btn-group { display: none !important; }
+            #app { width: 100%; height: auto; border: none; display: block; position: static;}
+            #display { overflow: visible !important; height: auto !important; display: block;}
+            .msg { color: black !important; border: 1px solid #eee !important; break-inside: avoid; max-width: 100%; width: 100%;}
+            .print-target { display: block !important; position: absolute; top: 0; left: 0; width: 100%; z-index: 9999; }
         }
     </style>
 </head>
 <body>
 
-    <div id="sidebar">
-        <h3><i class="fas fa-question-circle"></i> FAQ Rápidas</h3>
-        <p style="font-size: 0.8em; color: #bdc3c7;">Haz clic para consultar:</p>
-        <div class="faq-item" onclick="sendQuickQuery('¿Cómo cambio mi contraseña?')">¿Cómo cambio mi contraseña?</div>
-        <div class="faq-item" onclick="sendQuickQuery('¿Dónde veo mis facturas?')">¿Dónde veo mis facturas?</div>
-        <div class="faq-item" onclick="sendQuickQuery('Soporte técnico')">Soporte técnico</div>
-        <div class="faq-item" onclick="sendQuickQuery('Ver planes disponibles')">Ver planes disponibles</div>
-    </div>
+<div id="app">
+    <aside id="sidebar">
+        <div id="logo-container"></div>
+        <div class="cat-title">Métricas Power BI</div>
+        <a class="nav-item" onclick="ask('stringsbox')">StringsBox</a>
+        <a class="nav-item" onclick="ask('hincas')">Hincas</a>
+        <a class="nav-item" onclick="ask('trackers')">Trackers</a>
+        <a class="nav-item" onclick="ask('modulos')">Módulos</a>
+        <a class="nav-item" onclick="ask('predrilling')">Predrilling</a>
+        <a class="nav-item" onclick="ask('micropilotes')">Micropilotes</a>
+        <div class="cat-title">Gestión</div>
+        <a class="nav-item" onclick="ask('avance general')">Avance General</a>
+        <a class="nav-item" onclick="ask('facturacion')">Facturación</a>
+        <a class="nav-item" onclick="ask('eventos')">Eventos</a>
+        <a class="nav-item" onclick="window.print()" style="color:var(--rv-cyan); margin-top:30px; border:1px solid; text-align: center; font-weight: bold;">📸 CAPTURA TERMINAL</a>
+    </aside>
 
-    <div id="chat-container">
-        <div id="chat-window">
-            <div class="message ai-message">
-                ¡Hola! 👋 Soy tu asistente de apoyo. ¿En qué puedo ayudarte hoy? 
-                <br><br>
-                Si tienes alguna duda específica, puedes escribirla o seleccionar una de las <b>Preguntas Frecuentes</b> en el menú de la izquierda.
+    <main id="chat-area">
+        <div id="display"></div>
+        <div id="input-zone">
+            <input type="text" id="user-in" placeholder="Iniciando enlace con Puerta de Oro...">
+            <button id="send">⚡</button>
+        </div>
+    </main>
+</div>
+
+<script>
+    const PROYECTO_DATA = {
+        stringsbox: { t: 1500, e: 1474, a: 98.27 },
+        hincas: { t: 101970, e: 101970, a: 100 },
+        trackers: { t: 5733, e: 5733, a: 100 },
+        modulos: { t: 511300, e: 501490, a: 98.07 },
+        predrilling: { t: 10197, e: 8576, r: 1621, a: 84.10 },
+        micropilotes: { t: 5099, e: 1570, r: 3529, a: 30.79 },
+        avance: { previsto: "84.10%", peso: "98.07%", contractual: "100.00%" },
+        costos: { total: "385.633.885.899,00", eventos: "2.272.365.581,00" }
+    };
+
+    const display = document.getElementById('display');
+    const input = document.getElementById('user-in');
+    const btn = document.getElementById('send');
+
+    function addMsg(html, type) {
+        const d = document.createElement('div'); d.className = `msg ${type}`; d.innerHTML = html;
+        display.appendChild(d); display.scrollTop = display.scrollHeight;
+        return d;
+    }
+
+    function analyze(val) {
+        const q = val.toLowerCase().trim();
+
+        if (q.match(/(hola|buenos dias|saludos|hey)/)) {
+            return setTimeout(() => addMsg("<b>Terminal Revergy:</b> Conexión establecida. Buen día estimado operador.", "bot"), 300);
+        }
+        if (q.match(/(gracias|excelente|perfecto|muy bien|genial)/)) {
+            return setTimeout(() => addMsg("Es un placer asistirle, operador.", "bot"), 300);
+        }
+        if (q.match(/(adios|chao|hasta luego|cerrar|terminar)/)) {
+            return setTimeout(() => addMsg("Cerrando sesión en DataCore. ¡Hasta pronto!", "bot"), 300);
+        }
+
+        let k = "";
+        if(q.includes("string")) k = "stringsbox";
+        else if(q.includes("hinca")) k = "hincas";
+        else if(q.includes("tracker")) k = "trackers";
+        else if(q.includes("modulo")) k = "modulos";
+        else if(q.includes("predrill")) k = "predrilling";
+        else if(q.includes("micro")) k = "micropilotes";
+
+        if(k) draw(k.toUpperCase(), PROYECTO_DATA[k]);
+        else if (q.includes("avance")) addMsg(`Avance Previsto: <b>${PROYECTO_DATA.avance.previsto}</b>.`, "bot");
+        else addMsg("Métrica no detectada.", "bot");
+    }
+
+    function draw(title, data) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 600; canvas.height = 380;
+        const ctx = canvas.getContext('2d');
+        
+        ctx.fillStyle = "#010816"; ctx.fillRect(0,0,600,380);
+        ctx.fillStyle = "#004a99"; ctx.fillRect(0,0,600,70);
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 20px Orbitron"; ctx.fillText("REVERGY DATACORE REPORT", 25, 45);
+        ctx.fillStyle = "#00f2ff"; ctx.font = "bold 28px Orbitron"; ctx.fillText(title, 320, 140);
+        ctx.font = "18px JetBrains Mono"; ctx.fillStyle = "#e2e8f0";
+        ctx.fillText(`TOTAL: ${data.t.toLocaleString()}`, 320, 190);
+        ctx.fillText(`EJECUTADO: ${data.e.toLocaleString()}`, 320, 230);
+        ctx.fillStyle = "#00f2ff"; ctx.font = "bold 22px Orbitron"; ctx.fillText(`AVANCE: ${data.a}%`, 320, 275);
+
+        const cx = 160, cy = 210, r = 90;
+        ctx.beginPath(); ctx.lineWidth = 15; ctx.strokeStyle = "rgba(0, 242, 255, 0.1)"; ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke();
+        ctx.beginPath(); ctx.lineWidth = 15; ctx.strokeStyle = "#00f2ff"; ctx.arc(cx, cy, r, -Math.PI/2, (-Math.PI/2)+(data.a/100*Math.PI*2)); ctx.stroke();
+        ctx.fillStyle = "#ffffff"; ctx.textAlign = "center"; ctx.font = "bold 32px Orbitron"; ctx.fillText(data.a+"%", cx, cy+12);
+
+        const imgURL = canvas.toDataURL("image/png");
+        const id = 'rep-' + Date.now();
+        
+        addMsg(`
+            <div class="report-box" id="${id}">
+                <img src="${imgURL}">
+                <div class="btn-group">
+                    <button class="btn-act" onclick="downloadPNG('${imgURL}', '${title}')">📥 PNG</button>
+                    <button class="btn-act" onclick="printReport('${id}')" style="background:#ce1212; color:#fff">📄 PDF</button>
+                </div>
             </div>
-        </div>
-        <div id="input-area">
-            <input type="text" id="user-input" placeholder="Escribe un saludo o una duda aquí..." onkeypress="handleKeyPress(event)">
-            <button onclick="processMessage()">Enviar</button>
-        </div>
-    </div>
+        `, "bot");
+    }
 
-    <script>
-        const chatWindow = document.getElementById('chat-window');
-        const userInput = document.getElementById('user-input');
+    window.downloadPNG = (u, n) => { 
+        const l = document.createElement('a'); l.href = u; l.download = 'Revergy_' + n + '.png'; l.click(); 
+    };
 
-        // Lógica de razonamiento del asistente
-        function getAIResponse(input) {
-            const query = input.toLowerCase();
+    window.printReport = (id) => { 
+        const el = document.getElementById(id);
+        el.classList.add('print-target');
+        setTimeout(() => { window.print(); el.classList.remove('print-target'); }, 250);
+    };
+    
+    window.ask = (t) => { input.value = t; btn.onclick(); };
 
-            // 1. Saludos informales y "¿qué onda?"
-            if (query.includes("hola") || query.includes("que onda") || query.includes("qué onda") || query.includes("como vas") || query.includes("buenos dias")) {
-                return "¡Qué onda! Todo excelente por acá, listo para apoyarte. 😊 ¿En qué te puedo ayudar? Recuerda que si no sabes por dónde empezar, el <b>menú lateral izquierdo</b> tiene las preguntas más comunes ya listas para ti.";
-            }
+    btn.onclick = () => { 
+        if(input.value.trim()) { 
+            const v = input.value; 
+            addMsg(v, 'user'); 
+            analyze(v); 
+            input.value=''; 
+        } 
+    };
 
-            // 2. Funcionamiento
-            if (query.includes("como funcionas") || query.includes("que haces") || query.includes("quien eres")) {
-                return "Soy un asistente diseñado para guiarte en esta plataforma. Puedo responder dudas técnicas, ayudarte a navegar o darte información sobre servicios. Una forma rápida de conocerme es explorando el <b>menú lateral</b>, donde verás lo que más me preguntan.";
-            }
-
-            // 3. No sabe qué preguntar / confusión
-            if (query.includes("no se") || query.includes("ayuda") || query.includes("instrucciones") || query.includes("que preguntar")) {
-                return "¡No te preocupes! Para empezar, te recomiendo mirar el <b>panel izquierdo (FAQ Rápidas)</b>. Allí he seleccionado los temas más importantes. Solo haz clic en uno y te daré la respuesta al instante.";
-            }
-
-            // 4. Despedidas
-            if (query.includes("adios") || query.includes("chao") || query.includes("gracias") || query.includes("hasta luego")) {
-                return "¡De nada! Ha sido un gusto saludarte. Si necesitas algo más, aquí estaré. ¡Que tengas un excelente día! 👋";
-            }
-
-            // 5. Respuesta por defecto (Simulación de búsqueda)
-            return "Entiendo tu consulta sobre '" + input + "'. Estoy procesando la información... Mientras tanto, no olvides que en el <b>menú lateral</b> puedes encontrar temas relacionados que te podrían servir.";
+    input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            btn.onclick(); 
         }
+    });
 
-        function processMessage() {
-            const text = userInput.value.trim();
-            if (text === "") return;
-
-            addMessage(text, 'user-message');
-            userInput.value = "";
-
-            // Simular tiempo de respuesta
-            setTimeout(() => {
-                const response = getAIResponse(text);
-                addMessage(response, 'ai-message');
-            }, 600);
-        }
-
-        function addMessage(text, className) {
-            const div = document.createElement('div');
-            div.className = `message ${className}`;
-            div.innerHTML = text; // Usamos innerHTML para permitir negritas en la respuesta
-            chatWindow.appendChild(div);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-        }
-
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') processMessage();
-        }
-
-        function sendQuickQuery(query) {
-            userInput.value = query;
-            processMessage();
-        }
-    </script>
+    window.onload = () => addMsg("<b>NÚCLEO ACTIVO.</b> Esperando comandos...", "bot");
+</script>
 </body>
 </html>
+
+
 
 
 
